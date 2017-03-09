@@ -3,120 +3,47 @@
     var fn = {
         // Funcionalidades
         Iniciar: function () {
-        	fn.App();
+        	fn.ValidarCPF();
+          fn.PesquisarCEP();
         },
-        App : function () {
-            var location = 'http://' + window.location.hostname + "/demandou-git";
-
-            // alert(location);
-        	$('#formLogin').submit(function(e){
-        		e.preventDefault();
-        		var strUsuario = $("#usuario").val();
-                var strSenha   = $("#senha").val();
-                $.ajax({
-                    url: location + "/usuario/autenticar",
-                    type: "POST",
-                    data: {
-                        usuario:strUsuario, 
-                        senha:strSenha,
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        if (data.status == 'falha') {
-                            alert('Ooops, erro!');
-                        } else {
-                            console.log(data);
-                            if (data.codigo_perfil == 1) {
-                                // user
-                                window.location = location;    
-                            } else {
-                                // admin
-                                window.location = location + "/admin";    
-                            }
-                        }
-                    },
-                    error: function(stc,error){
-                        console.log(error);
-                        console.log(stc)
-                    }
-                }).done(function(response, status){
+        ValidarCPF: function() {
+            jQuery('.validar').cpfcnpj({
+                mask: true,
+                validate: 'cpf',
+                event: 'focusout',
+                handler: '.validar',
+                ifValid: function  (input) { input.css('background-color', 'white'); },
+                ifInvalid: function (input) { 
+                    //alert('CPF InvÃ¡lido, favor corrigir.');
+                    input.css('background-color', 'rgba(240,0,0,.3)');
+                    jQuery('.validar').focus(); 
+                }
+            });
+            jQuery('.mask-celular').mask('(00) 00000-0000');
+            jQuery('.mask-cep').mask('00.000-000');
+        },
+        PesquisarCEP: function() {
+          jQuery('body').on('blur', '.validarCEP', function() {
+            let _this = this;
+            if (_this.value) {
+                let cep = _this.value.replace(/([^a-z0-9]+)/gi, '');
+                let url = 'https://viacep.com.br/ws/' + cep + '/json/';
+                var jqxhr = jQuery.get(url, function (response) {
+                    console.log(response);
+                    jQuery('input[name=cidade]').val(response.localidade);
+                    jQuery('select[name=estado]').val(response.uf);
+                    jQuery('input[name=logradouro]').val(response.logradouro);
+                    jQuery('input[name=bairro]').val(response.bairro);
+                }).done(function () {
+                    // fim, carregou
+                }).fail(function () {
+                    alert("Oops, ocorreu algum problema. Tente novamente, por favor?");
+                    // jQuery('.cep-loader').hide();
                 });
-            });
-            $('#logout').click(function(){
-                var strUsuario = $("#session-usuario").val();
-                $.ajax({
-                    url: location + "/usuario/logout",
-                    type: "POST",
-                    dataType: 'text',
-                    // ajaxSend: function(){$("body").css("background-color","blue");},
-                    // ajaxComplete: function(){$("#loader").hide('slow');},
-                    error: function(stc,error){
-                        //alert("erro:"+error);
-                        //alert('erro:'+ error);
-                        console.log(error);
-                    }
-                }).done(function(response, status){
-                    if (status == "success") {
-                        //alert(response);
-                        window.location = location;//"http://localhost/demandou-git/";
-                    } else {
-                        alert('Erro ao sair. Tente novamente. =]');
-                    }
-                    //console.log(response);
-                });
-            });
-
-            // Enable pusher logging - don't include this in production
-            Pusher.log = function(message) {
-              if (window.console && window.console.log) {
-                window.console.log(message);
-              }
-            };
-
-            var pusher = new Pusher('44c94eeeff9f1fa8ac50', {
-              encrypted: true
-            });
-
-            var geral = pusher.subscribe('geral');
-            geral.bind('login', function(data) {
-              // alertify.set({ delay: 3000 });
-              alertify.log('O usuário ' + data.nome + ' está conectado.', "", 0);
-              $.titleAlert("Notificação: Usuário conectado", {
-                  requireBlur:false,
-                  stopOnFocus:true,
-                  // duration:4000,
-                  interval:700
-              });
-              // alert('O usuário ' + data.nome + ' está conectado.');
-            });
-            var timeline = pusher.subscribe('timeline');
-            timeline.bind('novo_projeto', function(data) {
-              // alertify.set({ delay: 3000 });
-              //alertify.log('O projeto ' + data.titulo + ' foi criado.', "", 0);
-              var projeto = data['0'].projeto;
-              var lideres = data['1'].lideres;
-              var participantes = data['2'].participantes;
-              // console.log(data['0'].projeto);
-              // console.log(data['1'].lideres);
-              // console.log(data['2'].participantes);
-              
-              participantes.forEach(function(item){
-                console.log(item);
-              });
-
-              alertify.log('O projeto ' + projeto.titulo + ' foi criado.', "", 0);
-              
-              $.titleAlert("Notificação: Novo Projeto", {
-                  requireBlur:false,
-                  stopOnFocus:true,
-                  // duration:4000,
-                  interval:700
-              });
-              //alert('O projeto ' + data.titulo + ' foi criado.');
-            });
-
+            }
+          });
         }
-	}
+	  }
     $(document).ready(function () {
         fn.Iniciar();
     });
