@@ -19,6 +19,7 @@ class Inscricao_model extends CI_Model {
         public $cidade;
         public $estado;
         public $documento_identidade;
+        public $documento_cpf;
 
         public function __construct() {
                 // Call the CI_Model constructor
@@ -51,6 +52,7 @@ class Inscricao_model extends CI_Model {
                 $this->estado = $inscricao['estado'];
                
                 $this->documento_identidade = $inscricao['documento_identidade'];
+                $this->documento_cpf = $inscricao['documento_cpf'];
                 
                 // $this->codigo_funcao = (int) $usuario['codigo_funcao'];
                 // $this->codigo_perfil = (int) $usuario['codigo_perfil'];

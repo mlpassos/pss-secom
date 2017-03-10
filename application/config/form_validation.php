@@ -113,10 +113,18 @@ $config = array(
                 ),
                 array(
                         'field' => 'documento_identidade',
-                        'label' => 'Documento de Identidade',
-                        'rules' => 'callback_file_selected_test', 
+                        'label' => 'Identidade',
+                        'rules' => 'callback_documento_identidade_selected', 
                         'errors' => array(
-                                "file_selected_test" => "O arquivo %s é necessário."
+                                "documento_identidade_selected" => "O arquivo %s é necessário."
+                        )
+                ),
+                array(
+                        'field' => 'documento_cpf',
+                        'label' => 'CPF',
+                        'rules' => 'callback_documento_cpf_selected', 
+                        'errors' => array(
+                                "documento_cpf_selected" => "O arquivo %s é necessário."
                         )
                 )
         )
