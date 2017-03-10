@@ -120,10 +120,10 @@
 					<div class="form-group avatar">
 				  		<label for="documento_identidade">Identidade*</label>
 				  		<?php echo form_error('documento_identidade'); ?>
-				  		<div class="preview_imagem documento_identidade">
+				  		<!-- <div class="preview_imagem documento_identidade">
 				  			<img src="http://placehold.it/80x80" alt="Preview da imagem do documento de identidade" class="imagem_avatar img-circle">
-					    </div>
-					    <p class="help-block">Escolha seu arquivo. Tipos de imagem permitidos: png, jpg, gif. Tamanho máximo: 5MB.</p>
+					    </div> -->
+					    <p class="help-block">Tipos de arquivo permitidos: png, jpg, gif. <br>Tamanho máximo: 5MB.</p>
 					    <?php 
 						    echo form_upload(array(
 						    	"id" => "documento_identidade",
@@ -136,10 +136,10 @@
 				    <div class="form-group avatar">
 				  		<label for="documento_cpf">CPF*</label>
 				  		<?php echo form_error('documento_cpf'); ?>
-				  		<div class="preview_imagem documento_cpf">
+				  		<!-- <div class="preview_imagem documento_cpf">
 				  			<img src="http://placehold.it/80x80" alt="Preview da imagem do documento CPF" class="imagem_avatar img-circle">
-					    </div>
-					    <p class="help-block">Escolha seu arquivo. Tipos de imagem permitidos: png, jpg, gif. Tamanho máximo: 5MB.</p>
+					    </div> -->
+					    <p class="help-block">Tipos de arquivo permitidos: png, jpg, gif. <br>Tamanho máximo: 5MB.</p>
 					    <?php 
 						    echo form_upload(array(
 						    	"id" => "documento_cpf",

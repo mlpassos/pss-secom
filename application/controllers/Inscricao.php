@@ -22,7 +22,7 @@ class Inscricao extends CI_Controller {
 		// nada aqui
 	}
 	public function adicionar() {
-		$this->output->enable_profiler(TRUE);
+		// $this->output->enable_profiler(TRUE);
 		$data_header['meta']=array(
 			array(
 			"name" => "title",
@@ -51,8 +51,9 @@ class Inscricao extends CI_Controller {
 		); 
 		// JS
 		$data_footer['js']=array(
-			array('file' =>  base_url() . 'assets/js/global.js'),
-			array('file' =>  base_url() . 'assets/js/inscricao_adicionar.js')
+			array('file' =>  base_url() . 'assets/js/global.js')
+			// ,
+			// array('file' =>  base_url() . 'assets/js/inscricao_adicionar.js')
 		);
 
 
@@ -76,22 +77,35 @@ class Inscricao extends CI_Controller {
 				"documento_identidade"=>$this->multiUpload('documento_identidade'),
 				"documento_cpf"=>$this->multiUpload('documento_cpf')
 			);
+			$erro = '';
 			foreach ($upload_data as $key => $value) {
-				echo "<pre>";
-					var_dump($key);
-				echo "</pre>";
-				// if (isset($value['error'])) {
-				// 	echo sizeof($value['error']);	
-				// } else {
-				// 	echo "sem erros";
-				// 	$inscricao[$key] = $upload_data[$key];
-				// }
-				
+				if (array_key_exists('error', $value)) {
+					// echo "<pre>";
+					// 	var_dump($value);
+					// echo "</pre>";	
+					// echo $value['error'];
+					//echo $erro = true;
+					$erro = $value['error'];
+				} else {
+					// passou todos os uploads com sucesso, escreve no banco agora
+					// var_dump($upload_data[$key]);
+					// echo "<pre>";
+					// 	var_dump($key);
+					// echo "</pre>";	
+					$inscricaoTemp = $upload_data[$key];
+					// $inscricao[$key]['upload_data']['file_name'];
+					// echo "<pre>";
+					// 	var_dump($inscricaoTemp['upload_data']['file_name']);
+					// echo "</pre>";
+					$inscricao[$key]=$inscricaoTemp['upload_data']['file_name'];
+				}
 			}
+			// echo "<pre>";
+			// 	var_dump($inscricao);
+			// echo "</pre>";	
 			// $inscricao['documento_identidade'] = $upload_data['documento_identidade'];
 			// $inscricao['documento_cpf'] = $upload_data['documento_cpf'];
 			$data['upload_data'] = $upload_data;
-
 
 			// scale image to thumbnail size 120x120
 			// $config['image_library'] = 'gd2';
@@ -104,20 +118,27 @@ class Inscricao extends CI_Controller {
 			// $this->load->library('image_lib', $config); 
 			// $this->image_lib->resize();
 
-			// add user to database
-			$this->load->model('inscricao_model');
-			if ($this->inscricao_model->inserir($inscricao)) {
-				$nome = $inscricao['nome'];
-				$data['nome'] = $nome;
+			// adiciona a inscrição caso não tenha erros
+			if (!$erro) {
+				$this->load->model('inscricao_model');
+				if ($this->inscricao_model->inserir($inscricao)) {
+					// SUCESSO TOTAL
+					$nome = $inscricao['nome'];
+					$data['nome'] = $nome;
 
-				$message = "<b>" . $nome . "</b>, sua inscrição no PSS-SECOM foi confirmada.";
-				$to = $inscricao['email'];
-				
-				// $data['email_confirmacao'] = $this->sendMail($to, $nome, $message);
-				
-				$this->load->view('inscricao_sucesso', $data);
+					$message = "<b>" . $nome . "</b>, sua inscrição no PSS-SECOM foi confirmada.";
+					$to = $inscricao['email'];
+					
+					$data['email_confirmacao'] = $this->sendMail($to, $nome, $message);
+					
+					$this->load->view('inscricao_sucesso', $data);
+				} else {
+					// ERRO: BANCO DE DADOS
+					$this->load->view('inscricao_erro', $data);
+				}
 			} else {
-				echo "Oops, deu bug. Tente novamente? =]";
+				// ERRO: ARQUIVOS
+				$this->load->view('inscricao_erro', $data);
 			}
 		}
 
