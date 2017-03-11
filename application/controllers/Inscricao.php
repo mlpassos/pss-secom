@@ -22,7 +22,7 @@ class Inscricao extends CI_Controller {
 		// nada aqui
 	}
 	public function adicionar() {
-		// $this->output->enable_profiler(TRUE);
+		$this->output->enable_profiler(TRUE);
 		$data_header['meta']=array(
 			array(
 			"name" => "title",
@@ -41,7 +41,7 @@ class Inscricao extends CI_Controller {
 		$data_header['menu']=array(
 			array(
 				"name" => "Inscrição",
-				"link" => base_url() . 'inscricao',
+				"link" => base_url(),
 				"class" => ""
 				)
 		);
@@ -75,9 +75,10 @@ class Inscricao extends CI_Controller {
 
 			$upload_data = array(
 				"documento_identidade"=>$this->multiUpload('documento_identidade'),
-				"documento_cpf"=>$this->multiUpload('documento_cpf')
+				"documento_cpf"=>$this->multiUpload('documento_cpf'),
+				"documento_certidao_nascimento_casamento"=>$this->multiUpload('documento_certidao_nascimento_casamento')
 			);
-			$erro = '';
+			$erro = false;
 			foreach ($upload_data as $key => $value) {
 				if (array_key_exists('error', $value)) {
 					// echo "<pre>";
@@ -127,17 +128,26 @@ class Inscricao extends CI_Controller {
 					$data['nome'] = $nome;
 
 					$message = "<b>" . $nome . "</b>, sua inscrição no PSS-SECOM foi confirmada.";
+					$message .= "<p>Confira seus dados:</p>";
+					$message .= "<ul>";
+					foreach ($inscricao as $key => $value) {
+						$message .= '<li>' . $key . ': ' . $value . '</li>';
+					}
+					$message .= "</ul>";
+					$message .= "<p><small>* Caso exista algum erro/problema, entre em contato com a SECOM-PA.</small></p>";
 					$to = $inscricao['email'];
 					
 					$data['email_confirmacao'] = $this->sendMail($to, $nome, $message);
-					
+					$data['erro_tipo'] = 'noerror';
 					$this->load->view('inscricao_sucesso', $data);
 				} else {
 					// ERRO: BANCO DE DADOS
+					$data['erro_tipo'] = 'db';
 					$this->load->view('inscricao_erro', $data);
 				}
 			} else {
 				// ERRO: ARQUIVOS
+				$data['erro_tipo'] = 'arquivos';
 				$this->load->view('inscricao_erro', $data);
 			}
 		}
@@ -173,6 +183,14 @@ class Inscricao extends CI_Controller {
             return true;
         }
 	}
+	function documento_certidao_nascimento_casamento_selected() {
+		if (empty($_FILES['documento_certidao_nascimento_casamento']['name'])) {
+	        return false;
+	    }else{
+	        return true;
+	    }
+	}
+	
 	function do_upload($field_name) {
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'gif|jpg|png';

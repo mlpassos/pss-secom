@@ -1,7 +1,8 @@
 <div class="container">
 	<div class="row">
 		<div class="col-lg-12 col-md-12 form-inscricao-box">
-			<?php echo form_open_multipart('inscricao/adicionar', ["id" => "frmInscricao", "class" => "frm-inscricao", "role" => "form"]); ?>
+			<?php echo form_open_multipart('inscricao/adicionar', ["id" => "frmInscricao", "class" => "frm-inscricao submit-once", "role" => "form"]); ?>
+				<fieldset>
 				<div class="col-lg-8 col-md-8">
 				  <div class="form-group">
 				    <label for="nome">Nome*</label>
@@ -31,7 +32,7 @@
 				  <div class="form-group">
 				    <label for="data_nascimento">Data de nascimento</label>
 				    <?php echo form_error('data_nascimento'); ?>
-				    <input type="date" class="form-control" value="<?php echo set_value('data_nascimento'); ?>" id="data_nascimento" name="data_nascimento">
+				    <input type="text" class="form-control" value="<?php echo set_value('data_nascimento'); ?>" id="data_nascimento" name="data_nascimento">
 				  </div>
 				  <div class="form-group">
 					    <label for="escolaridade">Escolaridade</label>
@@ -53,7 +54,7 @@
 				  <div class="form-group">
 				    <label for="cep">CEP*</label>
 				    <?php echo form_error('cep'); ?>
-				    <input type="text" class="form-control validarCEP mask-cep" value="<?php echo set_value('cep'); ?>"  id="cep" name="cep" placeholder="CEP">
+				    <input type="text" class="form-control validarCEP mask-cep" value="<?php echo set_value('cep'); ?>"  id="cep" name="cep" placeholder="Digite seu CEP...">
 				  </div>
 				  <div class="form-group">
 				    <label for="logradouro">Logradouro*</label>
@@ -149,12 +150,34 @@
 						    )); 
 					    ?>
 				    </div>
+				    <div class="form-group avatar">
+				  		<label for="documento_certidao_nascimento_casamento">Certidão de nascimento, casamento ou declaração de união-estável*</label>
+				  		<?php echo form_error('documento_certidao_nascimento_casamento'); ?>
+				  		<!-- <div class="preview_imagem documento_cpf">
+				  			<img src="http://placehold.it/80x80" alt="Preview da imagem do documento CPF" class="imagem_avatar img-circle">
+					    </div> -->
+					    <p class="help-block">Tipos de arquivo permitidos: png, jpg, gif. <br>Tamanho máximo: 5MB.</p>
+					    <?php 
+						    echo form_upload(array(
+						    	"id" => "documento_certidao_nascimento_casamento",
+						    	"class" => "imagem_documentos",
+						    	"name" => "documento_certidao_nascimento_casamento",
+						    	"value" => set_value('documento_certidao_nascimento_casamento')
+						    )); 
+					    ?>
+				    </div>
 				</div>
 				<div class="col-lg-12">
-					<button type="submit" class="btn btn-default">
-						Gravar
+					<button id="btnSubmitFrmInscricao" type="submit" class="btn btn-primary">
+						<span class="message">
+							Gravar
+						</span>
+						<i class="loading hidden fa fa-spinner fa-spin fa-fw"></i>
+						<span class="sr-only">Loading...</span>
 					</button>
+					
 				</div>
+				</fieldset>
 			<?php echo form_close(); ?>
 		</div>
 	</div><!-- /.row -->

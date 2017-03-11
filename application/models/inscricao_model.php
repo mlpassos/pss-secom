@@ -20,6 +20,7 @@ class Inscricao_model extends CI_Model {
         public $estado;
         public $documento_identidade;
         public $documento_cpf;
+        public $documento_certidao_nascimento_casamento;
 
         public function __construct() {
                 // Call the CI_Model constructor
@@ -30,10 +31,12 @@ class Inscricao_model extends CI_Model {
                 
                 
                 // hack pra converter data do input html5 no formato mysql
-                $ano = date("Y",strtotime($inscricao['data_nascimento']));
+                $ano = date("yy",strtotime($inscricao['data_nascimento']));
                 $mes = date("m",strtotime($inscricao['data_nascimento']));
                 $dia = date("d",strtotime($inscricao['data_nascimento']));
                 // instancia o objeto
+                $data_nascimento = explode("/", $inscricao['data_nascimento']);
+                // echo $data_nascimento[2] . '-' . $data_nascimento[1] . '-' . $data_nascimento[0];
                 $this->codigo = NULL;
                 $this->data_criado = date('Y-m-d', time());
                 $this->nome = $inscricao['nome'];
@@ -41,7 +44,7 @@ class Inscricao_model extends CI_Model {
                 $this->celular = $inscricao['celular'];
                 $this->cpf = $inscricao['cpf'];
                 $this->identidade = $inscricao['identidade'];
-                $this->data_nascimento = $ano . '-' . $mes . '-' . $dia;
+                $this->data_nascimento = $data_nascimento[2] . '-' . $data_nascimento[1] . '-' . $data_nascimento[0];
                 $this->escolaridade = $inscricao['escolaridade'];
                 
                 $this->cep = $inscricao['cep'];
@@ -53,6 +56,8 @@ class Inscricao_model extends CI_Model {
                
                 $this->documento_identidade = $inscricao['documento_identidade'];
                 $this->documento_cpf = $inscricao['documento_cpf'];
+                $this->documento_certidao_nascimento_casamento = $inscricao['documento_certidao_nascimento_casamento'];
+                
                 
                 // $this->codigo_funcao = (int) $usuario['codigo_funcao'];
                 // $this->codigo_perfil = (int) $usuario['codigo_perfil'];

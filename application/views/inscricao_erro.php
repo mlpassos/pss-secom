@@ -6,40 +6,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <!-- <div class="col-lg-4"></div> -->
   <div class="col-lg-12 col-md-12">
     <div class="well">
-      <?php if (isset($nome)) { ?>
-        <p class="alert alert-success">
-          O usuário <strong><?php echo $nome; ?></strong> foi adicionado com sucesso.
+      <?php if ($erro_tipo == 'db') { ?>
+        <p class="alert alert-danger">
+          <i class='fa fa-exclamation-circle'></i> Não foi possível realizar sua inscrição. Por favor, tente novamente. Caso o problema continue, entre em contato com a SECOM-PA e informe o erro: "Problema ao gravar no banco de dados."
         </p>
       <?php } else { ?>
-
-        <p class="alert alert-danger">
-        Não foi possível completar sua inscrição. Por favor, tente novamente.
-        <br>
-        Caso o problema continue, entre em contato com a SECOM-PA e informe o erro: "Problema ao gravar no banco de dados."
-        </p>
-      <?php } ?>
-      <h3>Documentos anexados</h3>
-      <ul>
-      <?php 
-      foreach ($upload_data as $item => $value):?>
-        <li><?php echo $item;?>:
-      <?php
-        foreach ($value as $it => $val):
+        <h3>Documentos anexados</h3>
+        <ul>
+        <?php 
+        foreach ($upload_data as $item => $value):?>
+          <li><?php echo $item;?>:
+        <?php
+          foreach ($value as $it => $val):
           if ($it == "error") {
             echo '<br><br>';
             echo '<p class="alert alert-danger">';
-            echo "<b>Erro</b> ao enviar arquivo.<br>Por favor, tente novamente. Caso o problema continue, entre em contato com a SECOM-PA e informe o erro: 'Problema ao gravar o arquivo.'";
+            echo "<i class='fa fa-exclamation-circle'></i> <b>Inscrição não realizada</b>, por favor tente novamente. Caso o problema persista, entre em contato com a SECOM-PA e informe o erro: 'Problema ao gravar arquivo.'";
             echo '</p>';
-          } else {
-            echo "<br>" . $val['file_name'] . ' enviado com sucesso<br>';    
+            break 2;
+          } 
+          else {
+            echo '<ul class="fa-ul"><li><i class="fa fa-check-square"></i> ' . '<b>' . $val['file_name'] . '</b> enviado com sucesso</li></ul>';
           }
-      ?>
-        </li>
-      <?php 
-        endforeach; 
-      endforeach;
-      ?>
-      </ul>
+        ?>
+          </li>
+        <?php 
+          endforeach;
+        endforeach;
+      }
+        ?>
+        </ul>
       
     </div>
   </div>

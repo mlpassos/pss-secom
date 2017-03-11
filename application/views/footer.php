@@ -2,7 +2,9 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    
+    <script src="<?php echo base_url(); ?>assets/js/jquery-ui.min.js"></script>
+    <!-- <script src="<?php // echo base_url(); ?>assets/js/modernizr-custom.js"></script> -->
+    <!-- <script src="<?php // echo base_url(); ?>assets/js/date-polyfill.min.js"></script> -->
     <script src="<?php echo base_url(); ?>assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/jquery.mask.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/jquery.cpfcnpj.js"></script>
