@@ -60,8 +60,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <span class="icon-bar"></span>
           </button>
           <!-- <img src="http://www.finer.com.br/wp-content/uploads/2015/06/demanda-e1433765779365.png"> -->
+          
           <a class="navbar-brand" href="<?php echo base_url(); ?>">PSS SECOM-PA</a>
+          <!-- <a class="navbar-brand navbar-right" href="#">
+            <img src="http://www.secom.pa.gov.br/site/wp-content/themes/tema_do_bpa/images/logo-governo.png" alt="Na imagem, apresenta-se a bandeira do estado do Pará a esquerda, e a direita, o texto Governo do Pará.">
+          </a> -->
         </div>
+
         <div id="navbar" class="collapse navbar-collapse pull-right">
           <!-- SE USUÁRIO LOGADO MOSTRAR MENU -->
                      

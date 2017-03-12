@@ -22,7 +22,7 @@ class Inscricao extends CI_Controller {
 		// nada aqui
 	}
 	public function adicionar() {
-		$this->output->enable_profiler(TRUE);
+		// $this->output->enable_profiler(TRUE);
 		$data_header['meta']=array(
 			array(
 			"name" => "title",
@@ -68,44 +68,23 @@ class Inscricao extends CI_Controller {
 			$this->load->view('content', $data_header);
 		}
 		else {
-			// $this->load->view('inscricao_sucesso', $data);
 			$inscricao = $this->input->post();
-
-			
-
 			$upload_data = array(
 				"documento_identidade"=>$this->multiUpload('documento_identidade'),
 				"documento_cpf"=>$this->multiUpload('documento_cpf'),
-				"documento_certidao_nascimento_casamento"=>$this->multiUpload('documento_certidao_nascimento_casamento')
+				"documento_certidao_nascimento_casamento"=>$this->multiUpload('documento_certidao_nascimento_casamento'),
+				"documento_titulo_eleitoral"=>$this->multiUpload('documento_titulo_eleitoral'),
+				"documento_comprovante_residencia"=>$this->multiUpload('documento_comprovante_residencia')
 			);
 			$erro = false;
 			foreach ($upload_data as $key => $value) {
 				if (array_key_exists('error', $value)) {
-					// echo "<pre>";
-					// 	var_dump($value);
-					// echo "</pre>";	
-					// echo $value['error'];
-					//echo $erro = true;
 					$erro = $value['error'];
 				} else {
-					// passou todos os uploads com sucesso, escreve no banco agora
-					// var_dump($upload_data[$key]);
-					// echo "<pre>";
-					// 	var_dump($key);
-					// echo "</pre>";	
 					$inscricaoTemp = $upload_data[$key];
-					// $inscricao[$key]['upload_data']['file_name'];
-					// echo "<pre>";
-					// 	var_dump($inscricaoTemp['upload_data']['file_name']);
-					// echo "</pre>";
 					$inscricao[$key]=$inscricaoTemp['upload_data']['file_name'];
 				}
 			}
-			// echo "<pre>";
-			// 	var_dump($inscricao);
-			// echo "</pre>";	
-			// $inscricao['documento_identidade'] = $upload_data['documento_identidade'];
-			// $inscricao['documento_cpf'] = $upload_data['documento_cpf'];
 			$data['upload_data'] = $upload_data;
 
 			// scale image to thumbnail size 120x120
@@ -148,6 +127,25 @@ class Inscricao extends CI_Controller {
 			} else {
 				// ERRO: ARQUIVOS
 				$data['erro_tipo'] = 'arquivos';
+				echo "<pre>";
+					// var_dump($data['upload_data']);
+				echo "</pre>";
+				// apaga arquivos enviados e que nao deram erro pra nao gerar lixo
+				$this->load->helper('file');
+				foreach ($data['upload_data'] as $key => $value) {
+					if (array_key_exists('upload_data', $value)) {
+						// acha arquivo e apaga
+						if (read_file('./uploads/' . $value['upload_data']['file_name'])) {
+							if (unlink('./uploads/' . $value['upload_data']['file_name'])) {
+								echo 'Arquivo ' . $value['upload_data']['file_name'] . ' excluido com sucesso.<br>';
+							} else {
+								echo 'Erro ao excluir arquivo.';
+							}
+						}
+						// echo $value['upload_data']['file_name'] . "<br>";	
+
+					}
+				}
 				$this->load->view('inscricao_erro', $data);
 			}
 		}
@@ -156,23 +154,21 @@ class Inscricao extends CI_Controller {
 	}
 	function multiUpload($field_name) {
 		return $this->do_upload($field_name);
-		// $out = $this->upload->data();
-		// var_dump($out);
-		// return $out;
 	}
 	function check_default($element) {
-		// var_dump($element);
     	if($element == 'Escolher') {   
-    		// echo 'igual';
       		return FALSE;
     	} else { 
     		return true;
     	}
 	}
 	function documento_identidade_selected() {
+	
 		if (empty($_FILES['documento_identidade']['name'])) {
+            // echo 'aqui nao';
             return false;
         }else{
+        	// echo 'aqui tem';
             return true;
         }
 	}
@@ -190,11 +186,25 @@ class Inscricao extends CI_Controller {
 	        return true;
 	    }
 	}
+	function documento_titulo_eleitoral_selected($value) {
+		if (empty($_FILES['documento_titulo_eleitoral']['name'])) {
+            return false;
+        }else{
+            return true;
+        }
+	}
+	function documento_comprovante_residencia_selected($value) {
+		if (empty($_FILES['documento_comprovante_residencia']['name'])) {
+            return false;
+        }else{
+            return true;
+        }
+	}
 	
 	function do_upload($field_name) {
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'gif|jpg|png';
-		$config['max_size']	= '3072';
+		$config['max_size']	= '5120';
 		$config['max_width']  = '0';
 		$config['max_height']  = '0';
 
@@ -203,15 +213,12 @@ class Inscricao extends CI_Controller {
 		if ( ! $this->upload->do_upload($field_name))
 		{
 			$error = array('error' => $this->upload->display_errors());
-			// var_dump($error);
 			return $error;
-			// $this->load->view('upload_form', $error);
 		}
 		else
 		{
 			$data = array('upload_data' => $this->upload->data());
 			return $data;
-			// $this->load->view('upload_success', $data);
 		}
 	}
 	function sendMail($to, $name, $message) {

@@ -21,6 +21,8 @@ class Inscricao_model extends CI_Model {
         public $documento_identidade;
         public $documento_cpf;
         public $documento_certidao_nascimento_casamento;
+        public $documento_titulo_eleitoral;
+        public $documento_comprovante_residencia;
 
         public function __construct() {
                 // Call the CI_Model constructor
@@ -57,6 +59,9 @@ class Inscricao_model extends CI_Model {
                 $this->documento_identidade = $inscricao['documento_identidade'];
                 $this->documento_cpf = $inscricao['documento_cpf'];
                 $this->documento_certidao_nascimento_casamento = $inscricao['documento_certidao_nascimento_casamento'];
+                $this->documento_titulo_eleitoral = $inscricao['documento_titulo_eleitoral'];
+                $this->documento_comprovante_residencia = $inscricao['documento_comprovante_residencia'];
+                
                 
                 
                 // $this->codigo_funcao = (int) $usuario['codigo_funcao'];

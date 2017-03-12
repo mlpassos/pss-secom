@@ -1,18 +1,18 @@
 <div class="container">
-	<div class="row">
-		<div class="col-lg-12 col-md-12 form-inscricao-box">
+	<div class="row form-inscricao-box">
+		<!-- <div class="col-lg-12 col-md-12 form-inscricao-box"> -->
 			<?php echo form_open_multipart('inscricao/adicionar', ["id" => "frmInscricao", "class" => "frm-inscricao submit-once", "role" => "form"]); ?>
 				<fieldset>
 				<div class="col-lg-8 col-md-8">
 				  <div class="form-group">
 				    <label for="nome">Nome*</label>
 				    <?php echo form_error('nome'); ?>
-				    <input type="text" class="form-control" id="nome" name="nome" value="<?php echo set_value('nome'); ?>" placeholder="Nome">
+				    <input type="text" class="form-control" id="nome" name="nome" value="<?php echo set_value('nome'); ?>" placeholder="Nome" required>
 				  </div>
 				  <div class="form-group">
 				    <label for="email">E-mail*</label>
 				    <?php echo form_error('email'); ?>
-				    <input type="email" class="form-control" value="<?php echo set_value('email'); ?>" id="email" name="email" placeholder="Email">
+				    <input type="email" class="form-control" value="<?php echo set_value('email'); ?>" id="email" name="email" placeholder="Email" required>
 				  </div>
 				  <div class="form-group">
 				    <label for="celular">Tel. Celular*</label>
@@ -51,15 +51,20 @@
 					    echo form_dropdown('escolaridade', $arrRes, set_value('escolaridade'), array('id'=>'escolaridade','class'=>'form-control')); 
 					    ?>
 				  </div>
-				  <div class="form-group">
+				  <div class="form-group has-feedback">
 				    <label for="cep">CEP*</label>
 				    <?php echo form_error('cep'); ?>
-				    <input type="text" class="form-control validarCEP mask-cep" value="<?php echo set_value('cep'); ?>"  id="cep" name="cep" placeholder="Digite seu CEP...">
+				    <input type="text" class="form-control validarCEP mask-cep" value="<?php echo set_value('cep'); ?>"  id="cep" name="cep" placeholder="Digite seu CEP..." aria-describedby="helpBlockCEP">
+				    <span id="helpBlockCEP" class="help-block hidden">CEP inválido.</span>
+				    <span class="hidden cep-spinner fa fa-spinner fa-spin fa-fw form-control-feedback" aria-hidden="true"></span>
+				    <span class="hidden cep-check fa fa-check form-control-feedback" aria-hidden="true"></span>
+				    <span class="hidden cep-error fa fa-times form-control-feedback" aria-hidden="true"></span>
+  					<!-- <span id="inputSuccess2Status" class="sr-only">(success)</span> -->
 				  </div>
 				  <div class="form-group">
 				    <label for="logradouro">Logradouro*</label>
 				    <?php echo form_error('logradouro'); ?>
-				    <input type="text" class="form-control" id="logradouro" value="<?php echo set_value('logradouro'); ?>" name="logradouro" placeholder="Logradouro">
+				    <input type="text" class="form-control cep-campo" id="logradouro" value="<?php echo set_value('logradouro'); ?>" name="logradouro" placeholder="Logradouro">
 				  </div>
 				  <div class="form-group">
 				    <label for="complemento">Complemento</label>
@@ -69,12 +74,12 @@
 				  <div class="form-group">
 				    <label for="bairro">Bairro*</label>
 				    <?php echo form_error('bairro'); ?>
-				    <input type="text" class="form-control" value="<?php echo set_value('bairro'); ?>"  id="bairro" name="bairro" placeholder="Bairro">
+				    <input type="text" class="form-control cep-campo" value="<?php echo set_value('bairro'); ?>"  id="bairro" name="bairro" placeholder="Bairro">
 				  </div>
 				  <div class="form-group">
 				    <label for="cidade">Cidade*</label>
 				    <?php echo form_error('cidade'); ?>
-				    <input type="text" class="form-control" value="<?php echo set_value('cidade'); ?>"  id="cidade" name="cidade" placeholder="Cidade">
+				    <input type="text" class="form-control cep-campo" value="<?php echo set_value('cidade'); ?>"  id="cidade" name="cidade" placeholder="Cidade">
 				  </div>
 				  <div class="form-group">
 					    <label for="estado">Estado</label>
@@ -110,7 +115,7 @@
 							'SE'=>'Sergipe',
 							'TO'=>'Tocantins'
 						);
-					    echo form_dropdown('estado', $estadosBrasileiros, set_value('estado'), array('id'=>'estado','class'=>'form-control')); 
+					    echo form_dropdown('estado', $estadosBrasileiros, set_value('estado'), array('id'=>'estado','class'=>'form-control cep-campo')); 
 					    ?>
 				  </div>
 				</div>
@@ -166,6 +171,39 @@
 						    )); 
 					    ?>
 				    </div>
+				    <div class="form-group avatar">
+				  		<label for="documento_titulo_eleitoral">Título eleitoral e Certidão de quitação eleitoral*</label>
+				  		<?php echo form_error('documento_titulo_eleitoral'); ?>
+				  		<!-- <div class="preview_imagem documento_cpf">
+				  			<img src="http://placehold.it/80x80" alt="Preview da imagem do documento CPF" class="imagem_avatar img-circle">
+					    </div> -->
+					    <p class="help-block">Tipos de arquivo permitidos: png, jpg, gif. <br>Tamanho máximo: 5MB.</p>
+					    <?php 
+						    echo form_upload(array(
+						    	"id" => "documento_titulo_eleitoral",
+						    	"class" => "imagem_documentos",
+						    	"name" => "documento_titulo_eleitoral",
+						    	"value" => set_value('documento_titulo_eleitoral')
+						    )); 
+					    ?>
+				    </div>
+				    <div class="form-group avatar">
+				  		<label for="documento_comprovante_residencia">Comprovante de residência*</label>
+				  		<?php echo form_error('documento_comprovante_residencia'); ?>
+				  		<!-- <div class="preview_imagem documento_cpf">
+				  			<img src="http://placehold.it/80x80" alt="Preview da imagem do documento CPF" class="imagem_avatar img-circle">
+					    </div> -->
+					    <p class="help-block">Tipos de arquivo permitidos: png, jpg, gif. <br>Tamanho máximo: 5MB.</p>
+					    <?php 
+						    echo form_upload(array(
+						    	"id" => "documento_comprovante_residencia",
+						    	"class" => "imagem_documentos",
+						    	"name" => "documento_comprovante_residencia",
+						    	"value" => set_value('documento_comprovante_residencia')
+						    )); 
+					    ?>
+				    </div>
+				    
 				</div>
 				<div class="col-lg-12">
 					<button id="btnSubmitFrmInscricao" type="submit" class="btn btn-primary">
@@ -179,6 +217,6 @@
 				</div>
 				</fieldset>
 			<?php echo form_close(); ?>
-		</div>
+		<!-- </div> -->
 	</div><!-- /.row -->
 </div><!-- /.container -->

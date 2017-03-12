@@ -55,22 +55,81 @@
         },
         PesquisarCEP: function() {
           jQuery('body').on('blur', '.validarCEP', function() {
+            if ($(this).val().length < 10) {
+                if ($(this).parent().hasClass('has-success')) {
+                    $(this).parent().removeClass('has-success');
+                }
+                if (!$(this).parent().hasClass('has-error')) {
+                    $(this).parent().addClass('has-error');
+                    
+                    if ($(this).next('.help-block').hasClass('hidden')) {
+                        $(this).next('.help-block').removeClass('hidden');
+                    }
+                }
+                // se campos endereço habilitados, desabilitar
+                jQuery('input[name=cidade]').val('');
+                jQuery('select[name=estado]').val('Escolher');
+                jQuery('input[name=logradouro]').val('');
+                jQuery('input[name=bairro]').val('');
+            }
+          });
+          jQuery('body').on('keyup', '.validarCEP', function() {
             let _this = this;
-            if (_this.value) {
-                let cep = _this.value.replace(/([^a-z0-9]+)/gi, '');
-                let url = 'https://viacep.com.br/ws/' + cep + '/json/';
-                var jqxhr = jQuery.get(url, function (response) {
-                    console.log(response);
-                    jQuery('input[name=cidade]').val(response.localidade);
-                    jQuery('select[name=estado]').val(response.uf);
-                    jQuery('input[name=logradouro]').val(response.logradouro);
-                    jQuery('input[name=bairro]').val(response.bairro);
-                }).done(function () {
-                    // fim, carregou
-                }).fail(function () {
-                    alert("Oops, ocorreu algum problema. Tente novamente, por favor?");
-                    // jQuery('.cep-loader').hide();
-                });
+            if ($(this).val().length === 10) {
+                console.log('enviando cep2...');
+                $(this).next().next('.cep-spinner').removeClass('hidden');
+                if (_this.value) {
+                    let cep = _this.value.replace(/([^a-z0-9]+)/gi, '');
+                    let url = 'https://viacep.com.br/ws/' + cep + '/json/';
+                    var jqxhr = jQuery.get(url, function (response) {
+                        console.log(response.erro);
+                        if (response.erro === true) {
+                            // icone erro
+                            $(_this).next().next('.cep-spinner').addClass('hidden');
+                            $(_this).next().next().next('.cep-check').addClass('hidden');
+                            $(_this).next().next().next().next('.cep-error').removeClass('hidden');
+                            if ($(_this).parent().hasClass('has-success')) {
+                               $(_this).parent().removeClass('has-success');
+                            }
+                            if (!$(_this).parent().hasClass('has-error')) {
+                                $(_this).parent().addClass('has-error');
+                                $(_this).next('.help-block').removeClass('hidden');
+                            }
+                            jQuery('input[name=cidade]').val('');
+                            jQuery('select[name=estado]').val('Escolher');
+                            jQuery('input[name=logradouro]').val('');
+                            jQuery('input[name=bairro]').val('');
+                            // desabilitar campos endereço
+                        } else {
+                            // icone sucesso
+                            $(_this).next().next('.cep-spinner').addClass('hidden');
+                            $(_this).next().next().next('.cep-check').removeClass('hidden');
+                            $(_this).next().next().next().next('.cep-error').addClass('hidden');
+                            if ($(_this).parent().hasClass('has-error')) {
+                               $(_this).parent().removeClass('has-error');
+                               $(_this).next('.help-block').addClass('hidden');
+                            }
+                            if (!$(_this).parent().hasClass('has-success')) {
+                               $(_this).parent().addClass('has-success');
+                            }
+                            // se campos endereço desabilitados, habilita
+                            jQuery('input[name=cidade]').val(response.localidade);
+                            jQuery('select[name=estado]').val(response.uf);
+                            jQuery('input[name=logradouro]').val(response.logradouro);
+                            jQuery('input[name=bairro]').val(response.bairro);
+                        }
+                    }).done(function () {
+                        // fim, carregou
+                    }).fail(function () {
+                        alert("Oops, ocorreu algum problema. Tente novamente, por favor?");
+                        // jQuery('.cep-loader').hide();
+                    });
+                }
+            } else {
+                // jQuery('input[name=cidade]').val('');
+                // jQuery('select[name=estado]').val('');
+                // jQuery('input[name=logradouro]').val('');
+                // jQuery('input[name=bairro]').val('');
             }
           });
         }

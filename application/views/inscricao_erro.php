@@ -21,8 +21,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           if ($it == "error") {
             echo '<br><br>';
             echo '<p class="alert alert-danger">';
-            echo "<i class='fa fa-exclamation-circle'></i> <b>Inscrição não realizada</b>, por favor tente novamente. Caso o problema persista, entre em contato com a SECOM-PA e informe o erro: 'Problema ao gravar arquivo.'";
-            echo '</p>';
+            echo "<i class='fa fa-exclamation-circle'></i> <b>Inscrição não realizada</b>, por favor tente novamente.</p>";
+            echo "<p><small> * Caso o problema persista, entre em contato com a SECOM-PA e informe o erro: <em>" . strtolower(strip_tags($val)) . "</em></small></p>";
             break 2;
           } 
           else {
