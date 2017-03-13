@@ -118,6 +118,7 @@ class Inscricao extends CI_Controller {
 					}
 					$message .= "</ul>";
 					$message .= "<p><small>* Caso exista algum erro/problema, entre em contato com a SECOM-PA.</small></p>";
+					// $to = $inscricao['nome'] . ' <' . $inscricao['email'] . '>';
 					$to = $inscricao['email'];
 					
 					$data['email_confirmacao'] = $this->sendMail($to, $nome, $message);
@@ -248,7 +249,7 @@ class Inscricao extends CI_Controller {
 		$this->email->set_newline("\r\n");
 	    $this->email->from('marciopassosbel@gmail.com');
 	    $this->email->to($to);
-	    $this->email->subject($name . ', confirmação de inscrição no PSS SECOM-PA');
+	    $this->email->subject('Confirmação de inscrição no PSS SECOM-PA');
 	    $this->email->message($message);
 	    return $this->email->send();
 	}
