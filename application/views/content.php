@@ -122,6 +122,7 @@
 				<div class="col-lg-4 col-md-4">
 					<div class="form-group">
 				  		<h3>Documentos anexados</h3>
+				  		<p class="help-block">Tipos de arquivo permitidos: png, jpg, gif. <br>Tamanho máximo: 5MB.</p>
 				  	</div>
 					<div class="form-group avatar">
 				  		<label for="documento_identidade">Identidade*</label>
@@ -129,7 +130,7 @@
 				  		<!-- <div class="preview_imagem documento_identidade">
 				  			<img src="http://placehold.it/80x80" alt="Preview da imagem do documento de identidade" class="imagem_avatar img-circle">
 					    </div> -->
-					    <p class="help-block">Tipos de arquivo permitidos: png, jpg, gif. <br>Tamanho máximo: 5MB.</p>
+					    
 					    <?php 
 						    echo form_upload(array(
 						    	"id" => "documento_identidade",
@@ -145,7 +146,6 @@
 				  		<!-- <div class="preview_imagem documento_cpf">
 				  			<img src="http://placehold.it/80x80" alt="Preview da imagem do documento CPF" class="imagem_avatar img-circle">
 					    </div> -->
-					    <p class="help-block">Tipos de arquivo permitidos: png, jpg, gif. <br>Tamanho máximo: 5MB.</p>
 					    <?php 
 						    echo form_upload(array(
 						    	"id" => "documento_cpf",
@@ -161,7 +161,6 @@
 				  		<!-- <div class="preview_imagem documento_cpf">
 				  			<img src="http://placehold.it/80x80" alt="Preview da imagem do documento CPF" class="imagem_avatar img-circle">
 					    </div> -->
-					    <p class="help-block">Tipos de arquivo permitidos: png, jpg, gif. <br>Tamanho máximo: 5MB.</p>
 					    <?php 
 						    echo form_upload(array(
 						    	"id" => "documento_certidao_nascimento_casamento",
@@ -177,7 +176,6 @@
 				  		<!-- <div class="preview_imagem documento_cpf">
 				  			<img src="http://placehold.it/80x80" alt="Preview da imagem do documento CPF" class="imagem_avatar img-circle">
 					    </div> -->
-					    <p class="help-block">Tipos de arquivo permitidos: png, jpg, gif. <br>Tamanho máximo: 5MB.</p>
 					    <?php 
 						    echo form_upload(array(
 						    	"id" => "documento_titulo_eleitoral",
@@ -190,16 +188,60 @@
 				    <div class="form-group avatar">
 				  		<label for="documento_comprovante_residencia">Comprovante de residência*</label>
 				  		<?php echo form_error('documento_comprovante_residencia'); ?>
-				  		<!-- <div class="preview_imagem documento_cpf">
-				  			<img src="http://placehold.it/80x80" alt="Preview da imagem do documento CPF" class="imagem_avatar img-circle">
-					    </div> -->
-					    <p class="help-block">Tipos de arquivo permitidos: png, jpg, gif. <br>Tamanho máximo: 5MB.</p>
 					    <?php 
 						    echo form_upload(array(
 						    	"id" => "documento_comprovante_residencia",
 						    	"class" => "imagem_documentos",
 						    	"name" => "documento_comprovante_residencia",
 						    	"value" => set_value('documento_comprovante_residencia')
+						    )); 
+					    ?>
+				    </div>
+				    <div class="form-group avatar">
+				  		<label for="documento_comprovante_ensino_fundamental">Certificado de conclusão do ensino fundamental*</label>
+				  		<?php echo form_error('documento_comprovante_ensino_fundamental'); ?>
+					    <?php 
+						    echo form_upload(array(
+						    	"id" => "documento_comprovante_ensino_fundamental",
+						    	"class" => "imagem_documentos",
+						    	"name" => "documento_comprovante_ensino_fundamental",
+						    	"value" => set_value('documento_comprovante_ensino_fundamental')
+						    )); 
+					    ?>
+				    </div>
+				    <div class="form-group avatar">
+				  		<label for="documento_historico_ensino_fundamental">Histórico escolar do ensino fundamental*</label>
+				  		<?php echo form_error('documento_historico_ensino_fundamental'); ?>
+					    <?php 
+						    echo form_upload(array(
+						    	"id" => "documento_historico_ensino_fundamental",
+						    	"class" => "imagem_documentos",
+						    	"name" => "documento_historico_ensino_fundamental",
+						    	"value" => set_value('documento_historico_ensino_fundamental')
+						    )); 
+					    ?>
+				    </div>
+				    <div class="form-group avatar">
+				  		<label for="documento_comprovante_trabalho">Comprovante de experiência de trabalho no cargo</label>
+				  		<?php echo form_error('documento_comprovante_trabalho'); ?>
+					    <?php 
+						    echo form_upload(array(
+						    	"id" => "documento_comprovante_trabalho",
+						    	"class" => "imagem_documentos",
+						    	"name" => "documento_comprovante_trabalho",
+						    	"value" => set_value('documento_comprovante_trabalho')
+						    )); 
+					    ?>
+				    </div>
+				    <div class="form-group avatar">
+				  		<label for="documento_certidao_detran_semob">Certidões emitidas pelo DETRAN/PA e SEMOB*</label>
+				  		<?php echo form_error('documento_certidao_detran_semob'); ?>
+					    <?php 
+						    echo form_upload(array(
+						    	"id" => "documento_certidao_detran_semob",
+						    	"class" => "imagem_documentos",
+						    	"name" => "documento_certidao_detran_semob",
+						    	"value" => set_value('documento_certidao_detran_semob')
 						    )); 
 					    ?>
 				    </div>
@@ -213,7 +255,6 @@
 						<i class="loading hidden fa fa-spinner fa-spin fa-fw"></i>
 						<span class="sr-only">Loading...</span>
 					</button>
-					
 				</div>
 				</fieldset>
 			<?php echo form_close(); ?>

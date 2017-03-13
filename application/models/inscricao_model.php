@@ -23,6 +23,10 @@ class Inscricao_model extends CI_Model {
         public $documento_certidao_nascimento_casamento;
         public $documento_titulo_eleitoral;
         public $documento_comprovante_residencia;
+        public $documento_comprovante_ensino_fundamental;
+        public $documento_historico_ensino_fundamental;
+        public $documento_certidao_detran_semob;
+        public $documento_comprovante_trabalho;
 
         public function __construct() {
                 // Call the CI_Model constructor
@@ -61,9 +65,11 @@ class Inscricao_model extends CI_Model {
                 $this->documento_certidao_nascimento_casamento = $inscricao['documento_certidao_nascimento_casamento'];
                 $this->documento_titulo_eleitoral = $inscricao['documento_titulo_eleitoral'];
                 $this->documento_comprovante_residencia = $inscricao['documento_comprovante_residencia'];
-                
-                
-                
+                $this->documento_comprovante_ensino_fundamental = $inscricao['documento_comprovante_ensino_fundamental'];
+                $this->documento_historico_ensino_fundamental = $inscricao['documento_historico_ensino_fundamental'];
+                $this->documento_certidao_detran_semob = $inscricao['documento_certidao_detran_semob'];
+                $this->documento_comprovante_trabalho = $inscricao['documento_comprovante_trabalho'];
+               
                 // $this->codigo_funcao = (int) $usuario['codigo_funcao'];
                 // $this->codigo_perfil = (int) $usuario['codigo_perfil'];
                 // $this->codigo_status = 1;

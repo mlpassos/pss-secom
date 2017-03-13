@@ -70,11 +70,15 @@ class Inscricao extends CI_Controller {
 		else {
 			$inscricao = $this->input->post();
 			$upload_data = array(
-				"documento_identidade"=>$this->multiUpload('documento_identidade'),
-				"documento_cpf"=>$this->multiUpload('documento_cpf'),
-				"documento_certidao_nascimento_casamento"=>$this->multiUpload('documento_certidao_nascimento_casamento'),
-				"documento_titulo_eleitoral"=>$this->multiUpload('documento_titulo_eleitoral'),
-				"documento_comprovante_residencia"=>$this->multiUpload('documento_comprovante_residencia')
+				"documento_identidade"=>$this->do_upload('documento_identidade'),
+				"documento_cpf"=>$this->do_upload('documento_cpf'),
+				"documento_certidao_nascimento_casamento"=>$this->do_upload('documento_certidao_nascimento_casamento'),
+				"documento_titulo_eleitoral"=>$this->do_upload('documento_titulo_eleitoral'),
+				"documento_comprovante_residencia"=>$this->do_upload('documento_comprovante_residencia'),
+				"documento_comprovante_ensino_fundamental"=>$this->do_upload('documento_comprovante_ensino_fundamental'),
+				"documento_historico_ensino_fundamental"=>$this->do_upload('documento_historico_ensino_fundamental'),
+				"documento_certidao_detran_semob"=>$this->do_upload('documento_certidao_detran_semob'),
+				"documento_comprovante_trabalho"=>$this->do_upload('documento_comprovante_trabalho')
 			);
 			$erro = false;
 			foreach ($upload_data as $key => $value) {
@@ -127,9 +131,9 @@ class Inscricao extends CI_Controller {
 			} else {
 				// ERRO: ARQUIVOS
 				$data['erro_tipo'] = 'arquivos';
-				echo "<pre>";
+				// echo "<pre>";
 					// var_dump($data['upload_data']);
-				echo "</pre>";
+				// echo "</pre>";
 				// apaga arquivos enviados e que nao deram erro pra nao gerar lixo
 				$this->load->helper('file');
 				foreach ($data['upload_data'] as $key => $value) {
@@ -137,13 +141,12 @@ class Inscricao extends CI_Controller {
 						// acha arquivo e apaga
 						if (read_file('./uploads/' . $value['upload_data']['file_name'])) {
 							if (unlink('./uploads/' . $value['upload_data']['file_name'])) {
-								echo 'Arquivo ' . $value['upload_data']['file_name'] . ' excluido com sucesso.<br>';
+								// echo 'Arquivo ' . $value['upload_data']['file_name'] . ' excluido com sucesso.<br>';
 							} else {
-								echo 'Erro ao excluir arquivo.';
+								// echo 'Erro ao excluir arquivo.';
 							}
 						}
 						// echo $value['upload_data']['file_name'] . "<br>";	
-
 					}
 				}
 				$this->load->view('inscricao_erro', $data);
@@ -152,9 +155,7 @@ class Inscricao extends CI_Controller {
 
 		$this->load->view('footer',$data_footer);	
 	}
-	function multiUpload($field_name) {
-		return $this->do_upload($field_name);
-	}
+
 	function check_default($element) {
     	if($element == 'Escolher') {   
       		return FALSE;
@@ -200,10 +201,31 @@ class Inscricao extends CI_Controller {
             return true;
         }
 	}
+	function documento_comprovante_ensino_fundamental_selected($value) {
+		if (empty($_FILES['documento_comprovante_ensino_fundamental']['name'])) {
+            return false;
+        }else{
+            return true;
+        }
+	}
+	function documento_historico_ensino_fundamental_selected($value) {
+		if (empty($_FILES['documento_historico_ensino_fundamental']['name'])) {
+            return false;
+        }else{
+            return true;
+        }
+	}
+	function documento_certidao_detran_semob_selected($value) {
+		if (empty($_FILES['documento_certidao_detran_semob']['name'])) {
+            return false;
+        }else{
+            return true;
+        }
+	}
 	
 	function do_upload($field_name) {
 		$config['upload_path'] = './uploads/';
-		$config['allowed_types'] = 'gif|jpg|png';
+		$config['allowed_types'] = 'gif|jpg|png|pdf';
 		$config['max_size']	= '5120';
 		$config['max_width']  = '0';
 		$config['max_height']  = '0';
